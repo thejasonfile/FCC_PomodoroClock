@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+<head>
+    <title>Pomodoro Clock</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+</head>
+<body>
+	<ul id="pomodoro_items">
+		<li>
+			<label>Pomodoro Length</label>
+			<input id='pomodoro_length_input' type='text' value='25'>
+		</li>
+		<li>
+			<label>Short Break Length</label>
+			<input id='short_break_length' type='text' value='5'>
+		</li>
+		<li>
+			<label>Long Break Length</label>
+			<input id='long_break_length' type='text' value='30'>
+		</li>
+		<li>
+			<label># of Pomodoros until long break</label>
+			<input id='num_of_pomodoros' type='text' value='4'>
+		</li>
+	</ul>
+	<button id='start'>Start</button>
+	<button id='pause'>Pause</button>
+	<button id='clear'>Clear</button>
+	<h1>Pomodoro Time</h1>
+	<h3>Current Time</h3>
+	<div id='pomodoro_time'></div>
+
+
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/scripts.js"></script>
+</body>
+</html>
