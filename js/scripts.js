@@ -5,109 +5,89 @@ var numPoms = document.getElementById('num_of_pomodoros');
 
 var startButton = document.getElementById('start');
 var pauseButton = document.getElementById('pause');
-var clearButton = document.getElementById('clear');
+var stopButton = document.getElementById('stop');
 var skipButton = document.getElementById('skip');
 
-var currentPomTime = document.getElementById('pomodoro_time')
+var currentPhaseName = document.getElementById('phase_name');
+var currentPhaseTime = document.getElementById('pomodoro_time');
 
 //create initial pomodoro object
 var pomodoro_obj = {}
 
-var setPomValues = function() {
-	console.log('start pomodoro...');
+var setObjValues = function() {
+	console.log('set pomodoro object values...');
 	//take values from input fields and add them to object
+	pomodoro_obj.currentPhase = 0;
 	pomodoro_obj.length = pomLength.value;
 	pomodoro_obj.sbreak = shortBreakLength.value;
 	pomodoro_obj.lbreak = longBreakLength.value;
-	pomodoro_obj.currentPhase = 0;
 	pomodoro_obj.numPoms = numPoms.value;
 	//set phaseArray
 	setPhaseArray(pomodoro_obj.numPoms);
-	//set HTML on divs
-	currentPomTime.innerHTML = pomodoro_obj.length;
-
-	//input fields become labels
-
-	//start the pomodoro
-	getCurrentPhase();
+	//start the next phase
+	startPhase();
 }
 
 var setPhaseArray = function(numPoms) {
 	console.log('setting phase array...')
 	pomodoro_obj.phaseArray = [];
-	pomodoro_obj.phaseArray.push('pomodoro');
+	pomodoro_obj.phaseArray.push('Pomodoro');
 	for (var i = 0; i < numPoms; i++) {
-		pomodoro_obj.phaseArray.push('sbreak' + i);
-		pomodoro_obj.phaseArray.push('pomodoro');
+		pomodoro_obj.phaseArray.push('Short Break');
+		pomodoro_obj.phaseArray.push('Pomodoro');
 	}
-	pomodoro_obj.phaseArray.push('lbreak');
-}
-
-var getCurrentPhase = function(phaseName) {
-	console.log('get current phase...');
-	//get current phase and time
-	var phaseName = pomodoro_obj.phaseArray[pomodoro_obj.currentPhase];
-	var phaseMin = '';
-	var phaseSec = 0;
-	switch(phaseName) {
-		case 'sbreak':
-			phaseMin = pomodoro_obj.sbreak;
-			break;
-		case 'lbreak':
-			phaseMin = pomodoro_obj.lbreak;
-			break;
-		default:
-			phaseMin = pomodoro_obj.length;
-	}
-	currentPomTime.innerHTML = phaseMin + ':' + ("0" + phaseSec);
-	startPhase(pomLength.value);
+	pomodoro_obj.phaseArray.push('Long Break');
 }
 
 var startPhase = function() {
-	console.log('start phase...');
-	//start countdown
-		//while time > 0
-			//decrease number by 1 every 1 second
-		//until time = 0
-			//move on to next phase
+	//set phase variables
+	currentPhaseName.innerHTML = pomodoro_obj.phaseArray[pomodoro_obj.currentPhase];
+	switch (pomodoro_obj.phaseArray[pomodoro_obj.currentPhase]) {
+		case 'Short Break':
+			currentPhaseTime.innerHTML = parseInt(pomodoro_obj.sbreak);
+			break;
+		case 'Long Break':
+			currentPhaseTime.innerHTML = parseInt(pomodoro_obj.lbreak);
+			break;
+		default:
+			currentPhaseTime.innerHTML = parseInt(pomodoro_obj.length);
+	}
 
-	//when current phase finishes
-		//increase phase number by 1
+	minutes = pomodoro_obj.length;
+	seconds = 0;
+	var countdown = setInterval(function() {
+		timeString = minutes + ':' + seconds;
+		if (minutes > 0 || seconds > 0) {
+			if (seconds == 0) {
+				seconds = 60;
+				minutes -= 1;
+				timeString = minutes + ':' + seconds;
+				currentPhaseTime.innerHTML = timeString;
+			} 
+			seconds -= 1;
+			timeString = minutes + ':' + seconds;
+			currentPhaseTime.innerHTML = timeString;
+		} else {
+			clearInterval(countdown);
+			alert('pomodoro is over!');
+		}
+	}, 1000)
+}
+
+var nextPhase = function() {
+	//increment phase number
+	pomodoro_obj.currentPhase += 1;
+	if (pomodoro_obj.currentPhase < (pomodoro_obj.phaseArray).length) {
 		//start phase
-}
-
-var skipPhase = function() {
-	//skip current phase
-	console.log('skip current phase...')
-	//increase phase number by 1
-	//get current phase information
+		startPhase();
+	} else {
+		alert('pomodoro over...');
 	}
-
-var pausePom = function() {
-	//pause countdown
-	console.log('pause countdown...')
-}
-
-var clearPom = function() {
-	console.log('clear countdown...');
-	var pomItems = document.getElementById('pomodoro_items');
-	//stop countdown
-
-	//clear timers
-	currentPomTime.innerHTML = '';
-	//reset object values
-	for (var key in pomodoro_obj) {
-		pomodoro_obj[key] = 0;
-	}
-	pomodoro_obj.phaseArray = [];
-	//clear input values
-	for (var i = 0; i < pomItems.children.length; i++) {
-		pomItems.children[i].querySelector('input[type=text]').value = '';
-	}
+	
 }
 
 //set event handlers
-startButton.addEventListener('click', setPomValues);
-pauseButton.addEventListener('click', pausePom);
-clearButton.addEventListener('click', clearPom);
-skipButton.addEventListener('click', skipPhase);
+startButton.addEventListener('click', setObjValues);
+//pauseButton.addEventListener('click', pausePom);
+//stopButton.addEventListener('click', stopPom);
+skipButton.addEventListener('click', nextPhase);

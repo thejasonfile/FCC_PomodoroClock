@@ -1,8 +1,8 @@
-#pomodoro_time {
+.info {
 	border: 1px solid red;
 	padding: 1em;
 	font-size: 2em;
 	margin: 1em;
-	width: 10%;
+	width: 30%;
 	height: 3em;
 }
