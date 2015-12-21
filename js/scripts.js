@@ -52,21 +52,8 @@ var startPhase = function() {
 		default:
 			currentPhaseTime.innerHTML = parseInt(pomodoro_obj.length);
 	}
-
-	minutes = pomodoro_obj.length;
-	seconds = 0;
 	var countdown = setInterval(function() {
-		timeString = minutes + ':' + seconds;
-		if (minutes > 0 || seconds > 0) {
-			if (seconds == 0) {
-				seconds = 60;
-				minutes -= 1;
-				timeString = minutes + ':' + seconds;
-				currentPhaseTime.innerHTML = timeString;
-			} 
-			seconds -= 1;
-			timeString = minutes + ':' + seconds;
-			currentPhaseTime.innerHTML = timeString;
+		//
 		} else {
 			clearInterval(countdown);
 			alert('pomodoro is over!');
