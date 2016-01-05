@@ -93,55 +93,6 @@ var stopClock = function() {
 	clock.stop();
 }
 
-// var checkTime = function() {
-// 	var tick = setInterval(function() {
-// 		var currentTime = clock.getTime().time;
-// 		console.log('current time = ' + currentTime)
-// 		if (currentTime == 0) {
-// 		//alert('time is up!')
-// 		console.log('interval cleared...');
-// 		clearInterval(tick);
-// 		} else {
-// 			//console.log('ticking...')
-// 		}
-// 	}, 1000)
-// }
-
-// var countdown = function(minutes) {
-// 	seconds = 60;
-// 		setInterval(function() {
-// 			var time = minutes + ":" + seconds;
-// 			if (minutes > 0 || seconds > 0) {
-// 				if (seconds > 0) {
-// 					seconds -= 1;
-// 					if (seconds < 10) {
-// 						seconds = '0' + seconds;
-// 					}
-// 					time = minutes + ":" + seconds;
-// 					currentPhaseTime.innerHTML = time;
-// 				}
-// 				else {
-// 					minutes -= 1;
-// 					if (minutes < 10) {
-// 						minutes = '0' + minutes;
-// 					}
-// 					currentPhaseTime.innerHTML = time;
-// 					seconds = 60;
-// 				}
-// 			} else {
-// 				clearInterval(countdown);
-// 				console.log('time is up...');
-// 			}
-// 		}, 1000);
-// }
-
-// var stopPom = function() {
-// 	pomodoro_obj.running = false;
-// 	clearInterval(countdown);
-// 	currentPhaseName.innerHTML = '';
-// 	currentPhaseTime.innerHTML = '';
-// }
-
 //set event handlers
 startButton.addEventListener('click', setObjValues);
 stopButton.addEventListener('click', stopClock);
