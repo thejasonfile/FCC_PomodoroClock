@@ -12,10 +12,24 @@ var currentPhaseTime = document.getElementById('pomodoro_time');
 //create initial pomodoro object
 var pomodoro_obj = {}
 
+//create clock object
 var clock = $('#pomodoro_time').FlipClock({
 	autoStart: false,
 	countdown: true,
-	clockFace: 'MinuteCounter'
+	clockFace: 'MinuteCounter',
+	callbacks: {
+			stop: function() {
+				console.log('clock has stopped!');
+			},
+
+			start: function() {
+				console.log('clock has started!');
+			},
+
+			interval: function() {
+				console.log('tick...');
+			}
+	}
 });
 
 var setObjValues = function() {
@@ -54,56 +68,80 @@ var startPhase = function() {
 	switch (pomodoro_obj.phaseArray[pomodoro_obj.currentPhase]) {
 		case 'Short Break':
 			//currentPhaseTime.innerHTML = parseInt(pomodoro_obj.sbreak);
-			minutes = (parseInt(shortBreakLength.value) - 1);
+			minutes = (parseInt(shortBreakLength.value));
 			seconds = 60;
 			break;
 		case 'Long Break':
-			minutes = (parseInt(longBreakLength.value) - 1);
+			minutes = (parseInt(longBreakLength.value));
 			seconds = 60;
 			break;
 		default:
 			//currentPhaseTime.innerHTML = parseInt(pomodoro_obj.length);
-			minutes = (parseInt(pomLength.value) - 1);
+			minutes = (parseInt(pomLength.value));
 			seconds = 60;
 	}
-	countdown(minutes);
+	startClock(minutes);
 }
 
-var countdown = function(minutes) {
-	seconds = 60;
-		setInterval(function() {
-			var time = minutes + ":" + seconds;
-			if (minutes > 0 || seconds > 0) {
-				if (seconds > 0) {
-					seconds -= 1;
-					if (seconds < 10) {
-						seconds = '0' + seconds;
-					}
-					time = minutes + ":" + seconds;
-					currentPhaseTime.innerHTML = time;
-				}
-				else {
-					minutes -= 1;
-					if (minutes < 10) {
-						minutes = '0' + minutes;
-					}
-					currentPhaseTime.innerHTML = time;
-					seconds = 60;
-				}
-			} else {
-				clearInterval(countdown);
-				console.log('time is up...');
-			}
-		}, 1000);
+var startClock = function(minutes) {
+	clock.setTime(minutes * 60);
+	clock.start();
+	//checkTime();
 }
 
-var stopPom = function() {
-	pomodoro_obj.running = false;
-	clearInterval(countdown);
-	currentPhaseName.innerHTML = '';
-	currentPhaseTime.innerHTML = '';
+var stopClock = function() {
+	clock.stop();
 }
+
+// var checkTime = function() {
+// 	var tick = setInterval(function() {
+// 		var currentTime = clock.getTime().time;
+// 		console.log('current time = ' + currentTime)
+// 		if (currentTime == 0) {
+// 		//alert('time is up!')
+// 		console.log('interval cleared...');
+// 		clearInterval(tick);
+// 		} else {
+// 			//console.log('ticking...')
+// 		}
+// 	}, 1000)
+// }
+
+// var countdown = function(minutes) {
+// 	seconds = 60;
+// 		setInterval(function() {
+// 			var time = minutes + ":" + seconds;
+// 			if (minutes > 0 || seconds > 0) {
+// 				if (seconds > 0) {
+// 					seconds -= 1;
+// 					if (seconds < 10) {
+// 						seconds = '0' + seconds;
+// 					}
+// 					time = minutes + ":" + seconds;
+// 					currentPhaseTime.innerHTML = time;
+// 				}
+// 				else {
+// 					minutes -= 1;
+// 					if (minutes < 10) {
+// 						minutes = '0' + minutes;
+// 					}
+// 					currentPhaseTime.innerHTML = time;
+// 					seconds = 60;
+// 				}
+// 			} else {
+// 				clearInterval(countdown);
+// 				console.log('time is up...');
+// 			}
+// 		}, 1000);
+// }
+
+// var stopPom = function() {
+// 	pomodoro_obj.running = false;
+// 	clearInterval(countdown);
+// 	currentPhaseName.innerHTML = '';
+// 	currentPhaseTime.innerHTML = '';
+// }
 
 //set event handlers
 startButton.addEventListener('click', setObjValues);
-stopButton.addEventListener('click', stopPom);
+stopButton.addEventListener('click', stopClock);
