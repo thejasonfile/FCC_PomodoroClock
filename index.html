@@ -31,12 +31,17 @@
 			<input id='num_of_pomodoros' type='text' value='4'>
 		</li>
 	</ul>
-	<button id='start'>Start</button>
-	<button id='stop'>Stop</button>
+	<div id='buttons'>
+		<button id='start'>Start</button>
+		<button id='reset'>Reset</button>
+	</div>
 	<h3>Current Phase Name</h3>
 	<div class='info' id='phase_name'></div>
 	<h3>Current Phase Time</h3>
 	<div class='info' id='pomodoro_time'></div>
+	<button id='next' class='hidden'>Next Phase!</button>
+	<h3>Current Streak</h3>
+	<div class='info' id='streak'></div>
 
 	<!-- Latest compiled and minified JavaScript -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
