@@ -20,16 +20,17 @@ var clock = $('#pomodoro_time').FlipClock({
 	countdown: true,
 	clockFace: 'MinuteCounter',
 	callbacks: {
-			stop: function() {
-			},
-
-			start: function() {
-			},
-
 			interval: function() {
 				var currentTime = (clock.getTime().time);
+				//when clock reaches zero
 				if (currentTime === 0) {
-					pomodoro_obj.arrayIndex += 1;
+					//what happens when end of phase array is reached
+					if (pomodoro_obj.arrayIndex === pomodoro_obj.phaseArray.length - 1) {
+						pomodoro_obj.arrayIndex = 0;
+					} else {
+						pomodoro_obj.arrayIndex += 1;						
+					}
+					//if the previous phase was a Pomodoro, increase streak count
 					if (currentPhaseName.innerHTML === "Pomodoro") {
 						pomodoro_obj.currentStreak += 1;
 					}
@@ -48,28 +49,47 @@ var clock = $('#pomodoro_time').FlipClock({
 });
 
 var setObjValues = function() {
-	//take values from input fields and add them to object
-	pomodoro_obj.running = true;
-	pomodoro_obj.phaseArray = [];
-	pomodoro_obj.arrayIndex = 0;
-	pomodoro_obj.currentStreak = 0;
-	pomodoro_obj.length = pomLength.value;
-	pomodoro_obj.sbreak = shortBreakLength.value;
-	pomodoro_obj.lbreak = longBreakLength.value;
-	pomodoro_obj.numPoms = numPoms.value;
-	//set phaseArray
-	setPhaseArray(pomodoro_obj.numPoms);
-	//start the next phase
-	startPhase();
+	//check input fields for values
+	if (pomLength.value === '0') {
+		alert('wrong!');
+	} else {
+		//if no long break value is zero, then number of Poms until long break should also be zero
+		if (longBreakLength.value === '0') {
+			numPoms.value = 0;
+		} 
+		//take values from input fields and add them to object
+		pomodoro_obj.running = true;
+		pomodoro_obj.phaseArray = [];
+		pomodoro_obj.arrayIndex = 0;
+		pomodoro_obj.currentStreak = 0;
+		pomodoro_obj.length = pomLength.value;
+		pomodoro_obj.sbreak = shortBreakLength.value;
+		pomodoro_obj.lbreak = longBreakLength.value;
+		pomodoro_obj.numPoms = numPoms.value;
+		//set phaseArray
+		setPhaseArray(pomodoro_obj.numPoms);
+		//start the next phase
+		startPhase();
+	}
 }
 
 var setPhaseArray = function(numPoms) {
+	//always start with one Pomodoro phase
 	pomodoro_obj.phaseArray.push('Pomodoro');
+	//loop through adding additional phases to the array
 	for (var i = 1; i < numPoms; i++) {
-		pomodoro_obj.phaseArray.push('Short Break');
-		pomodoro_obj.phaseArray.push('Pomodoro');
+		//if Short Break is zero, just add Pomodoro phases, otherwise add both
+		if (shortBreakLength.value === '0') {
+			pomodoro_obj.phaseArray.push('Pomodoro');
+		} else {
+			pomodoro_obj.phaseArray.push('Short Break');
+			pomodoro_obj.phaseArray.push('Pomodoro');
+		}
 	}
-	pomodoro_obj.phaseArray.push('Long Break');
+	// if Long Break is zero, don't add it
+	if (longBreakLength.value !== '0') {
+		pomodoro_obj.phaseArray.push('Long Break');
+	}
 }
 
 var startPhase = function() {
