@@ -43,7 +43,7 @@ var clock = $('#pomodoro_time').FlipClock({
 				pomodoro_obj.arrayIndex = 0;
 				pomodoro_obj.currentStreak = 0;
 				currentStreak.innerHTML = 0;
-				currentStageName.innerHTML = '';
+				currentStageName.innerHTML = 'Pomodoro';
 			}
 	}
 });

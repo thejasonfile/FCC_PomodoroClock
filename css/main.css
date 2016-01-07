@@ -17,8 +17,26 @@ li {
 	list-style: none;
 }
 
+label {
+	font-size: 1.2em;
+	padding: 0 0.5em 0.4em 0;
+}
+
 input {
-	width: 50%;
+	width: 25%;
+	background-color: black;
+	font-size: 1.6em;
+	text-align: center;
+}
+
+h3 {
+	margin: 0;
+	padding-bottom: 1em;
+	text-decoration: underline;
+}
+
+.container {
+	padding: 0 10px;
 }
 
 #header,
@@ -27,16 +45,34 @@ input {
 	text-align: center;
 }
 
-#time_values {
-	padding-bottom: 1em;
+#stage_name,
+#streak {
+	color: white;
+	font-size: 2em;
 }
 
-label {
-	padding-bottom: 0.4em;
+#time_values {
+	padding-bottom: 1em;
+	padding-left: 0;
+}
+
+#time_values li {
+	padding-bottom: 1em;
 }
 
 .info {
 	padding-bottom: 1em;
+}
+
+
+button {
+	background-color: tomato;
+	color: black;
+	border: 1px solid white;
+	border-radius: 15px;
+	font-size: 3em;
+	padding: 0.3em;
+	margin-bottom: 1em;
 }
 
 .hidden {
@@ -48,20 +84,24 @@ label {
 ***********************/
 
 body,
+#stage_info,
 #time_values,
-#time_values li,
-#stage_info {
+#time_values li {
 	display: flex;
 }
 
 body,
-#time_values li,
+#time_values,
 #stage_info {
 	flex-direction: column;
 }
 
-#time_values {
+#time_values li {
 	justify-content: center;
+}
+
+#time_values li label {
+	align-self: center;
 }
 
 #stage_info {
