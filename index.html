@@ -5,48 +5,55 @@
     <meta charset="utf-8" />
     <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <!-- Latest compiled and minified CSS -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-	<!-- Optional theme -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" type="text/css" href="css/normalize.css">
 	<link rel="stylesheet" type="text/css" href="css/flipclock.css">
 	<link rel="stylesheet" type="text/css" href="css/main.css">
 </head>
 <body>
-	<ul id="pomodoro_items">
-		<li>
-			<label>Pomodoro Length</label>
-			<input id='pomodoro_length_input' type='number' value='25'>
-		</li>
-		<li>
-			<label>Short Break Length</label>
-			<input id='short_break_length' type='number' value='5'>
-		</li>
-		<li>
-			<label>Long Break Length</label>
-			<input id='long_break_length' type='number' value='30'>
-		</li>
-		<li>
-			<label># of Pomodoros until long break</label>
-			<input id='num_of_pomodoros' type='number' value='4'>
-		</li>
-	</ul>
-	<div id='buttons'>
-		<button id='start'>Start</button>
-		<button id='reset' class='hidden'>Reset</button>
+		<div id='header'>
+			<h1>Pomodoro Clock</h1>
+			<h3>Enter times for pomodoro length and break length</h3>
+		</div>
+		<div class='container'>
+			<ul id="time_values">
+				<li>
+					<label>Pomodoro Length</label>
+					<input id='pomodoro_length_input' type='number' value='25'>
+				</li>
+				<li>
+					<label>Short Break Length</label>
+					<input id='short_break_length' type='number' value='5'>
+				</li>
+				<li>
+					<label>Long Break Length</label>
+					<input id='long_break_length' type='number' value='30'>
+				</li>
+				<li>
+					<label># of Pomodoros until Long Break</label>
+					<input id='num_of_pomodoros' type='number' value='4'>
+				</li>
+			</ul>
+			<div id='stage_info'>
+				<h3>Current Stage Name</h3>
+				<div class='info' id='stage_name'>Pomodoro</div>
+				<h3 id='current_time'>Current Stage Time</h3>
+				<div class='info' id='pomodoro_time'></div>
+				<button id='next' class='hidden'>Next Stage!</button>
+				<div id='buttons'>
+					<button id='start'>Start</button>
+					<button id='reset' class='hidden'>Reset</button>
+				</div>
+				<h3>Current Streak</h3>
+				<div class='info' id='streak'>0</div>
+			</div>
+		</div>
+	<div id='footer'>
+		<h4>Project from FreeCodeCamp</h4>
+		<h4>For more information on The Pomodoro Technique</h4>
+		<h4>Jason Arnold Web Development</h4>
 	</div>
-	<h3>Current Phase Name</h3>
-	<div class='info' id='phase_name'></div>
-	<h3>Current Phase Time</h3>
-	<div class='info' id='pomodoro_time'></div>
-	<button id='next' class='hidden'>Next Phase!</button>
-	<h3>Current Streak</h3>
-	<div class='info' id='streak'></div>
-
-	<!-- Latest compiled and minified JavaScript -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<script type="text/javascript" src="js/flipclock.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="js/scripts.js"></script>
 </body>
 </html>

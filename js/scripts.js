@@ -7,8 +7,8 @@ var startButton = document.getElementById('start');
 var resetButton = document.getElementById('reset');
 var nextButton = document.getElementById('next');
 
-var currentPhaseName = document.getElementById('phase_name');
-var currentPhaseTime = document.getElementById('pomodoro_time');
+var currentStageName = document.getElementById('stage_name');
+var currentStageTime = document.getElementById('pomodoro_time');
 var currentStreak = document.getElementById('streak');
 
 //create initial pomodoro object
@@ -24,17 +24,17 @@ var clock = $('#pomodoro_time').FlipClock({
 				var currentTime = (clock.getTime().time);
 				//when clock reaches zero
 				if (!currentTime) {
-					//what happens when end of phase array is reached
-					if (pomodoro_obj.arrayIndex === pomodoro_obj.phaseArray.length - 1) {
+					//what happens when end of stage array is reached
+					if (pomodoro_obj.arrayIndex === pomodoro_obj.stageArray.length - 1) {
 						pomodoro_obj.arrayIndex = 0;
 					} else {
 						pomodoro_obj.arrayIndex += 1;						
 					}
-					//if the previous phase was a Pomodoro, increase streak count
-					if (currentPhaseName.innerHTML === "Pomodoro") {
+					//if the previous stage was a Pomodoro, increase streak count
+					if (currentStageName.innerHTML === "Pomodoro") {
 						pomodoro_obj.currentStreak += 1;
 					}
-					//add button to advance to next phase
+					//add button to advance to next stage
 					nextButton.classList.remove('hidden');
 				}
 			},
@@ -43,7 +43,7 @@ var clock = $('#pomodoro_time').FlipClock({
 				pomodoro_obj.arrayIndex = 0;
 				pomodoro_obj.currentStreak = 0;
 				currentStreak.innerHTML = 0;
-				currentPhaseName.innerHTML = '';
+				currentStageName.innerHTML = '';
 			}
 	}
 });
@@ -58,88 +58,61 @@ var setObjValues = function() {
 			numPoms.value = 0;
 		} 
 		//take values from input fields and add them to object
-		pomodoro_obj.running = true;
-		pomodoro_obj.phaseArray = [];
+		pomodoro_obj.stageArray = [];
 		pomodoro_obj.arrayIndex = 0;
 		pomodoro_obj.currentStreak = 0;
 		pomodoro_obj.length = pomLength.value;
 		pomodoro_obj.sbreak = parseInt(shortBreakLength.value);
 		pomodoro_obj.lbreak = parseInt(longBreakLength.value);
 		pomodoro_obj.numPoms = parseInt(numPoms.value);
-		//set phaseArray
-		setPhaseArray(pomodoro_obj.sbreak, pomodoro_obj.lbreak, pomodoro_obj.numPoms);
-		//start the next phase
-		startPhase();
+		//set stageArray
+		setStageArray(pomodoro_obj.sbreak, pomodoro_obj.lbreak, pomodoro_obj.numPoms);
+		//start the next stage
+		startStage();
 	}
 }
 
-// var setPhaseArray = function(shortBreakLength, longBreakLength, numPoms) {
-// 	//always add a Pomodoro phase
-// 	pomodoro_obj.phaseArray.push('Pomodoro');
-// 	//if Short Break is false, add only Pomodoros and Long Break
-// 	if (shortBreakLength || longBreakLength) {
-// 		if (!shortBreakLength) {
-// 			for (var i = 1; i < numPoms; i++) {
-// 				pomodoro_obj.phaseArray.push('Pomodoro');
-// 			}
-// 		//pomodoro_obj.phaseArray.push('Long Break');
-// 		}
-// 		if (!longBreakLength) {
-// 			pomodoro_obj.phaseArray.push('Short Break');
-// 		} else {
-// 			for (var i = 1; i < numPoms; i++) {
-// 			pomodoro_obj.phaseArray.push('Short Break');
-// 			pomodoro_obj.phaseArray.push('Pomodoro');
-// 		}
-// 		pomodoro_obj.phaseArray.push('Long Break');
-// 		}
-// 	}
-// }
-
-var setPhaseArray = function(shortBreakLength, longBreakLength, numPoms) {
-	//always add a Pomodoro phase
-	pomodoro_obj.phaseArray.push('Pomodoro');
+var setStageArray = function(shortBreakLength, longBreakLength, numPoms) {
+	//always add a Pomodoro stage
+	pomodoro_obj.stageArray.push('Pomodoro');
 	if (shortBreakLength && longBreakLength) {
 		for (var i = 1; i < numPoms; i++) {
-			pomodoro_obj.phaseArray.push('Short Break');
-			pomodoro_obj.phaseArray.push('Pomodoro');
+			pomodoro_obj.stageArray.push('Short Break');
+			pomodoro_obj.stageArray.push('Pomodoro');
 		}
-		pomodoro_obj.phaseArray.push('Long Break');
+		pomodoro_obj.stageArray.push('Long Break');
 	} 
 
 	else {
 		if (!longBreakLength && shortBreakLength) {
-			pomodoro_obj.phaseArray.push('Short Break');
+			pomodoro_obj.stageArray.push('Short Break');
 		}
-		if (!shortBreakLength && longBreakLength) {
+		else if (!shortBreakLength && longBreakLength) {
 			for (var i = 1; i < numPoms; i++) {
-			pomodoro_obj.phaseArray.push('Pomodoro');
+			pomodoro_obj.stageArray.push('Pomodoro');
 			}
-			pomodoro_obj.phaseArray.push('Long Break');
+			pomodoro_obj.stageArray.push('Long Break');
 		}
 	}
 }
 
-var startPhase = function() {
+var startStage = function() {
 	//hide nextButton
 	nextButton.classList.add('hidden');
 	startButton.classList.add('hidden');
 	resetButton.classList.remove('hidden');
-	//set phase variables
-	pomodoro_obj.running = true;
+	//set stage variables
 	var minutes = 0;
-	currentPhaseName.innerHTML = pomodoro_obj.phaseArray[pomodoro_obj.arrayIndex];
+	currentStageName.innerHTML = pomodoro_obj.stageArray[pomodoro_obj.arrayIndex];
 	currentStreak.innerHTML = pomodoro_obj.currentStreak;
-	switch (pomodoro_obj.phaseArray[pomodoro_obj.arrayIndex]) {
+	switch (pomodoro_obj.stageArray[pomodoro_obj.arrayIndex]) {
 		case 'Short Break':
-			//currentPhaseTime.innerHTML = parseInt(pomodoro_obj.sbreak);
 			minutes = (parseInt(shortBreakLength.value));
 			break;
 		case 'Long Break':
 			minutes = (parseInt(longBreakLength.value));
 			break;
 		default:
-			//currentPhaseTime.innerHTML = parseInt(pomodoro_obj.length);
 			minutes = (parseInt(pomLength.value));
 	}
 	startClock(minutes);
@@ -159,4 +132,4 @@ var endPom = function() {
 //set event handlers
 startButton.addEventListener('click', setObjValues);
 resetButton.addEventListener('click', endPom);
-nextButton.addEventListener('click', startPhase);
+nextButton.addEventListener('click', startStage);

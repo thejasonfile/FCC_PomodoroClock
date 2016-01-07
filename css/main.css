@@ -1,7 +1,73 @@
-.info {
 
+/***********************
+*   BASE STYLES        *
+***********************/
+
+body {
+	background-color: black;
+	min-height: 100vh;
+}
+
+body,
+.flip-clock-label {
+	color: tomato;
+}
+
+li {
+	list-style: none;
+}
+
+input {
+	width: 50%;
+}
+
+#header,
+#footer {
+	background-color: #313333;
+	text-align: center;
+}
+
+#time_values {
+	padding-bottom: 1em;
+}
+
+label {
+	padding-bottom: 0.4em;
+}
+
+.info {
+	padding-bottom: 1em;
 }
 
 .hidden {
 	display: none;
+}
+
+/***********************
+*   FLEXBOX            *
+***********************/
+
+body,
+#time_values,
+#time_values li,
+#stage_info {
+	display: flex;
+}
+
+body,
+#time_values li,
+#stage_info {
+	flex-direction: column;
+}
+
+#time_values {
+	justify-content: center;
+}
+
+#stage_info {
+	align-items: center;
+}
+
+.container {
+	flex: 1;
 }
