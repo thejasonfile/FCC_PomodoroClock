@@ -1,21 +1,22 @@
-var pomLength = document.getElementById('pomodoro_length_input');
-var shortBreakLength = document.getElementById('short_break_length');
-var longBreakLength = document.getElementById('long_break_length');
-var numPoms = document.getElementById('num_of_pomodoros');
+var pomLengthInput = document.getElementById('pomodoro_length');
+var shortBreakLengthInput = document.getElementById('short_break_length');
+var longBreakLengthInput = document.getElementById('long_break_length');
+var longBreakIntervalInput = document.getElementById('long_break_interval');
 
 var startButton = document.getElementById('start');
 var resetButton = document.getElementById('reset');
 var nextButton = document.getElementById('next');
 
-var currentStageName = document.getElementById('stage_name');
-var currentStageTime = document.getElementById('pomodoro_time');
-var currentStreak = document.getElementById('streak');
+var currentStageNameDiv = document.getElementById('stage_name');
+var currentStageTimeDiv = document.getElementById('current_time');
+var currentStreakDiv = document.getElementById('streak');
+var alertDiv = document.getElementById('alert');
 
 //create initial pomodoro object
-var pomodoro_obj = {}
+var pomodoroObj = {}
 
 //create clock object
-var clock = $('#pomodoro_time').FlipClock({
+var clock = $('#current_time').FlipClock({
 	autoStart: false,
 	countdown: true,
 	clockFace: 'MinuteCounter',
@@ -25,14 +26,14 @@ var clock = $('#pomodoro_time').FlipClock({
 				//when clock reaches zero
 				if (!currentTime) {
 					//what happens when end of stage array is reached
-					if (pomodoro_obj.arrayIndex === pomodoro_obj.stageArray.length - 1) {
-						pomodoro_obj.arrayIndex = 0;
+					if (pomodoroObj.arrayIndex === pomodoroObj.stageArray.length - 1) {
+						pomodoroObj.arrayIndex = 0;
 					} else {
-						pomodoro_obj.arrayIndex += 1;						
+						pomodoroObj.arrayIndex += 1;						
 					}
 					//if the previous stage was a Pomodoro, increase streak count
-					if (currentStageName.innerHTML === "Pomodoro") {
-						pomodoro_obj.currentStreak += 1;
+					if (currentStageNameDiv.innerHTML === "Pomodoro") {
+						pomodoroObj.currentStreak += 1;
 					}
 					//add button to advance to next stage
 					nextButton.classList.remove('hidden');
@@ -40,80 +41,92 @@ var clock = $('#pomodoro_time').FlipClock({
 			},
 
 			reset: function() {
-				pomodoro_obj.arrayIndex = 0;
-				pomodoro_obj.currentStreak = 0;
-				currentStreak.innerHTML = 0;
-				currentStageName.innerHTML = 'Pomodoro';
+				pomodoroObj = {};
+				nextButton.classList.add('hidden');
+				pomLengthInput.value = 25;
+				shortBreakLengthInput.value = 5;
+				longBreakLengthInput.value = 30;
+				longBreakIntervalInput.value = 4;
+				currentStageNameDiv.innerHTML = 'Pomodoro';
+				currentStreakDiv.innerHTML = 0;
 			}
 	}
 });
 
 var setObjValues = function() {
-	//confirm PomLength field has a valid value
-	if (!parseInt(pomLength.value)) {
-		alert('wrong!');
-	} else {
-		//if longBreakLength is invalid , then numPoms should be zero
-		if (!parseInt(longBreakLength.value )) {
-			numPoms.value = 0;
-		} 
 		//take values from input fields and add them to object
-		pomodoro_obj.stageArray = [];
-		pomodoro_obj.arrayIndex = 0;
-		pomodoro_obj.currentStreak = 0;
-		pomodoro_obj.length = pomLength.value;
-		pomodoro_obj.sbreak = parseInt(shortBreakLength.value);
-		pomodoro_obj.lbreak = parseInt(longBreakLength.value);
-		pomodoro_obj.numPoms = parseInt(numPoms.value);
+		pomodoroObj.stageArray = [];
+		pomodoroObj.arrayIndex = 0;
+		pomodoroObj.currentStreak = 0;
+		pomodoroObj.length = parseInt(pomLengthInput.value);
+		pomodoroObj.sbreak = parseInt(shortBreakLengthInput.value);
+		pomodoroObj.lbreak = parseInt(longBreakLengthInput.value);
+		pomodoroObj.lbreakInterval = parseInt(longBreakIntervalInput.value);
 		//set stageArray
-		setStageArray(pomodoro_obj.sbreak, pomodoro_obj.lbreak, pomodoro_obj.numPoms);
+		setStageArray(pomodoroObj.sbreak, pomodoroObj.lbreak, pomodoroObj.lbreakInterval);
 		//start the next stage
+		validateTimeValues();
+}
+
+var setStageArray = function(shortBreakLength, longBreakLength, longBreakInterval) {
+	//always add a Pomodoro stage
+	pomodoroObj.stageArray.push('Pomodoro');
+	if (pomodoroObj.sbreak && pomodoroObj.lbreak) {
+		for (var i = 1; i < longBreakInterval; i++) {
+			pomodoroObj.stageArray.push('Short Break');
+			pomodoroObj.stageArray.push('Pomodoro');
+		}
+		pomodoroObj.stageArray.push('Long Break');
+	} 
+
+	else {
+		if (!pomodoroObj.lbreak && pomodoroObj.sbreak) {
+			pomodoroObj.stageArray.push('Short Break');
+		}
+		else if (!pomodoroObj.sbreak && pomodoroObj.lbreak) {
+			for (var i = 1; i < longBreakInterval; i++) {
+			pomodoroObj.stageArray.push('Pomodoro');
+			}
+			pomodoroObj.stageArray.push('Long Break');
+		}
+	}
+}
+
+var validateTimeValues = function() {
+	$('#alert').remove();
+	//confirm pomodoro length is valid
+	if (pomodoroObj.length <= 0 || pomodoroObj.sbreak < 0 || pomodoroObj.lbreak < 0 || pomodoroObj.lbreakInterval < 0) {
+		showAlert("Pomodoro length must be a positive number.<p>All other values must be equal to or greater than 0</p>");
+	}  else if (!pomodoroObj.length || pomodoroObj.sbreak === '' || pomodoroObj.lbreak === '' || pomodoroObj.lbreakInterval === '') {
+		showAlert("All values must be entered")
+	} else {
 		startStage();
 	}
 }
 
-var setStageArray = function(shortBreakLength, longBreakLength, numPoms) {
-	//always add a Pomodoro stage
-	pomodoro_obj.stageArray.push('Pomodoro');
-	if (shortBreakLength && longBreakLength) {
-		for (var i = 1; i < numPoms; i++) {
-			pomodoro_obj.stageArray.push('Short Break');
-			pomodoro_obj.stageArray.push('Pomodoro');
-		}
-		pomodoro_obj.stageArray.push('Long Break');
-	} 
-
-	else {
-		if (!longBreakLength && shortBreakLength) {
-			pomodoro_obj.stageArray.push('Short Break');
-		}
-		else if (!shortBreakLength && longBreakLength) {
-			for (var i = 1; i < numPoms; i++) {
-			pomodoro_obj.stageArray.push('Pomodoro');
-			}
-			pomodoro_obj.stageArray.push('Long Break');
-		}
-	}
+var showAlert = function(message) {
+	$('#time_values').append("<div id='alert'>" + message + "</div>")
+	$('#alert').fadeIn(500);
 }
 
 var startStage = function() {
-	//hide nextButton
+	//hide buttons
 	nextButton.classList.add('hidden');
 	startButton.classList.add('hidden');
 	resetButton.classList.remove('hidden');
 	//set stage variables
 	var minutes = 0;
-	currentStageName.innerHTML = pomodoro_obj.stageArray[pomodoro_obj.arrayIndex];
-	currentStreak.innerHTML = pomodoro_obj.currentStreak;
-	switch (pomodoro_obj.stageArray[pomodoro_obj.arrayIndex]) {
+	currentStageNameDiv.innerHTML = pomodoroObj.stageArray[pomodoroObj.arrayIndex];
+	currentStreakDiv.innerHTML = pomodoroObj.currentStreak;
+	switch (pomodoroObj.stageArray[pomodoroObj.arrayIndex]) {
 		case 'Short Break':
-			minutes = (parseInt(shortBreakLength.value));
+			minutes = (parseInt(pomodoroObj.sbreak));
 			break;
 		case 'Long Break':
-			minutes = (parseInt(longBreakLength.value));
+			minutes = (parseInt(pomodoroObj.lbreak));
 			break;
 		default:
-			minutes = (parseInt(pomLength.value));
+			minutes = (parseInt(pomodoroObj.length));
 	}
 	startClock(minutes);
 }

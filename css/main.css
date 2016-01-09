@@ -27,6 +27,9 @@ input {
 	background-color: black;
 	font-size: 1.6em;
 	text-align: center;
+	border-color: tomato;
+	color: white;
+	border-radius: 5px;
 }
 
 h3 {
@@ -60,6 +63,15 @@ h3 {
 	padding-bottom: 1em;
 }
 
+#alert {
+	background-color: tomato;
+	font-size: 1.5em;
+	color: white;
+	padding: 1.5em;
+	border: solid white 1px;
+	border-radius: 15px;
+}
+
 .info {
 	padding-bottom: 1em;
 }
@@ -67,7 +79,7 @@ h3 {
 
 button {
 	background-color: tomato;
-	color: black;
+	color: white;
 	border: 1px solid white;
 	border-radius: 15px;
 	font-size: 3em;

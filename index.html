@@ -17,7 +17,7 @@
 			<ul id="time_values">
 				<li>
 					<label>Pomodoro Length</label>
-					<input id='pomodoro_length_input' type='number' value='25'>
+					<input id='pomodoro_length' type='number' value='25'>
 				</li>
 				<li>
 					<label>Short Break Length</label>
@@ -28,17 +28,17 @@
 					<input id='long_break_length' type='number' value='30'>
 				</li>
 				<li>
-					<label># of Poms </label>
-					<input id='num_of_pomodoros' type='number' value='4'>
+					<label>Long Break Interval </label>
+					<input id='long_break_interval' type='number' value='4'>
 				</li>
 			</ul>
 			<div id='stage_info'>
-				<h3>Current Stage Name</h3>
+				<h3>Current Stage</h3>
 				<div class='info' id='stage_name'>Pomodoro</div>
-				<h3 id='current_time'>Current Stage Time</h3>
-				<div class='info' id='pomodoro_time'></div>
-				<button id='next' class='hidden'>Next Stage!</button>
+				<h3>Time Remaining</h3>
+				<div class='info' id='current_time'></div>
 				<div id='buttons'>
+					<button id='next' class='hidden'>Next Stage</button>
 					<button id='start'>Start</button>
 					<button id='reset' class='hidden'>Reset</button>
 				</div>
