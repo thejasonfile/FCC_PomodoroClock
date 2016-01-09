@@ -2,6 +2,7 @@ var pomLengthInput = document.getElementById('pomodoro_length');
 var shortBreakLengthInput = document.getElementById('short_break_length');
 var longBreakLengthInput = document.getElementById('long_break_length');
 var longBreakIntervalInput = document.getElementById('long_break_interval');
+var inputs = document.getElementsByTagName('input');
 
 var startButton = document.getElementById('start');
 var resetButton = document.getElementById('reset');
@@ -23,8 +24,8 @@ var clock = $('#current_time').FlipClock({
 	callbacks: {
 			interval: function() {
 				var currentTime = (clock.getTime().time);
-				//when clock reaches zero
-				if (!currentTime) {
+				//when clock reaches zero and pomodoro has not been reset
+				if (!currentTime && pomodoroObj.running === true) {
 					//what happens when end of stage array is reached
 					if (pomodoroObj.arrayIndex === pomodoroObj.stageArray.length - 1) {
 						pomodoroObj.arrayIndex = 0;
@@ -36,13 +37,21 @@ var clock = $('#current_time').FlipClock({
 						pomodoroObj.currentStreak += 1;
 					}
 					//add button to advance to next stage
+					playAudio();
 					nextButton.classList.remove('hidden');
 				}
 			},
 
 			reset: function() {
+				//reset pomodoro object
 				pomodoroObj = {};
+				//hide next button
 				nextButton.classList.add('hidden');
+				//enable input fields
+				$.each(inputs, function() {
+					$(this).prop('disabled', false);
+				})
+				//reset input field, stage name, and streak values
 				pomLengthInput.value = 25;
 				shortBreakLengthInput.value = 5;
 				longBreakLengthInput.value = 30;
@@ -56,6 +65,7 @@ var clock = $('#current_time').FlipClock({
 var setObjValues = function() {
 		//take values from input fields and add them to object
 		pomodoroObj.stageArray = [];
+		pomodoroObj.running = true;
 		pomodoroObj.arrayIndex = 0;
 		pomodoroObj.currentStreak = 0;
 		pomodoroObj.length = parseInt(pomLengthInput.value);
@@ -114,6 +124,10 @@ var startStage = function() {
 	nextButton.classList.add('hidden');
 	startButton.classList.add('hidden');
 	resetButton.classList.remove('hidden');
+	//disable input fields
+	$.each(inputs, function() {
+					$(this).prop('disabled', true);
+				})
 	//set stage variables
 	var minutes = 0;
 	currentStageNameDiv.innerHTML = pomodoroObj.stageArray[pomodoroObj.arrayIndex];
@@ -139,7 +153,14 @@ var startClock = function(minutes) {
 var endPom = function() {
 	startButton.classList.remove('hidden');
 	resetButton.classList.add('hidden');
+	pomodoroObj.running = false;
 	clock.reset();
+}
+
+var playAudio = function() {
+	var horn = 'audio/airhorn.mp3';
+    var audio = new Audio(horn);
+	audio.play();
 }
 
 //set event handlers

@@ -6,6 +6,7 @@
 body {
 	background-color: black;
 	min-height: 100vh;
+	font-family: Helvetica, sans-serif;
 }
 
 body,
@@ -38,6 +39,15 @@ h3 {
 	text-decoration: underline;
 }
 
+a {
+	color: tomato;
+}
+
+#header {
+	font-family: 'Lobster', cursive;
+	font-size: 1.4em;
+}
+
 .container {
 	padding: 0 10px;
 }
@@ -46,6 +56,7 @@ h3 {
 #footer {
 	background-color: #313333;
 	text-align: center;
+	padding: 0 1em;
 }
 
 #stage_name,
@@ -55,8 +66,7 @@ h3 {
 }
 
 #time_values {
-	padding-bottom: 1em;
-	padding-left: 0;
+	padding: 1em 0;
 }
 
 #time_values li {
@@ -70,6 +80,7 @@ h3 {
 	padding: 1.5em;
 	border: solid white 1px;
 	border-radius: 15px;
+	text-align: center;
 }
 
 .info {
@@ -98,13 +109,15 @@ button {
 body,
 #stage_info,
 #time_values,
-#time_values li {
+#time_values li,
+#buttons {
 	display: flex;
 }
 
 body,
 #time_values,
-#stage_info {
+#stage_info,
+#buttons {
 	flex-direction: column;
 }
 
@@ -123,3 +136,8 @@ body,
 .container {
 	flex: 1;
 }
+
+/***********************
+*   MEDIA QUERIES      *
+***********************/
+
