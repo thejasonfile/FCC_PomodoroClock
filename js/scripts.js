@@ -103,11 +103,11 @@ var setStageArray = function(shortBreakLength, longBreakLength, longBreakInterva
 }
 
 var validateTimeValues = function() {
-	$('#alert').remove();
+	$('#alert').addClass('hidden').html('');
 	//confirm pomodoro length is valid
 	if (pomodoroObj.length <= 0 || pomodoroObj.sbreak < 0 || pomodoroObj.lbreak < 0 || pomodoroObj.lbreakInterval < 0) {
 		showAlert("Pomodoro length must be a positive number.<p>All other values must be equal to or greater than 0</p>");
-	}  else if (!pomodoroObj.length || pomodoroObj.sbreak === '' || pomodoroObj.lbreak === '' || pomodoroObj.lbreakInterval === '') {
+	}  else if (!pomodoroObj.length || isNaN(pomodoroObj.sbreak) || isNaN(pomodoroObj.lbreak) || isNaN(pomodoroObj.lbreakInterval)) {
 		showAlert("All values must be entered")
 	} else {
 		startStage();
@@ -115,8 +115,7 @@ var validateTimeValues = function() {
 }
 
 var showAlert = function(message) {
-	$('#time_values').append("<div id='alert'>" + message + "</div>")
-	$('#alert').fadeIn(500);
+	$('#alert').removeClass('hidden').append(message)
 }
 
 var startStage = function() {
