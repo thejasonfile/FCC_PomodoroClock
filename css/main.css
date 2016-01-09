@@ -43,12 +43,18 @@ a {
 	color: tomato;
 }
 
+.fa {
+	padding: 0 0.4em;
+}
+
 #header {
 	font-family: 'Lobster', cursive;
-	font-size: 1.4em;
+	font-size: 1em;
 }
 
 .container {
+	background: linear-gradient(rgba(0, 0, 0, 0.95), transparent 550%),
+		rgba(0, 0, 0, 0.9) url('../images/background.jpg');
 	padding: 0 10px;
 }
 
